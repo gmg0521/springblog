@@ -37,15 +37,15 @@ public class BoardApiController {
             return new ResponseDTO<Integer>(HttpStatus.BAD_REQUEST.value(), 0);
     }
 
-    @DeleteMapping(value = "/api/board/{id}")
-    public ResponseDTO<Integer> delete(@PathVariable int id) {
-        boardService.글삭제(id);
-        return new ResponseDTO<Integer>(HttpStatus.OK.value(), 1);
-    }
-
     @PutMapping(value = "/api/board/{id}")
     public ResponseDTO<Integer> update(@PathVariable int id, @RequestBody Board board) {
         boardService.글수정(id, board);
+        return new ResponseDTO<Integer>(HttpStatus.OK.value(), 1);
+    }
+
+    @DeleteMapping(value = "/api/board/{id}")
+    public ResponseDTO<Integer> delete(@PathVariable int id) {
+        boardService.글삭제(id);
         return new ResponseDTO<Integer>(HttpStatus.OK.value(), 1);
     }
 
