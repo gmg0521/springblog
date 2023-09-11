@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.merchandise.eeblog.dto.ReplySaveRequestDTO;
 import com.merchandise.eeblog.dto.ResponseDTO;
 import com.merchandise.eeblog.model.Board;
-import com.merchandise.eeblog.model.Reply;
 import com.merchandise.eeblog.model.User;
 import com.merchandise.eeblog.service.BoardService;
 
@@ -50,13 +50,15 @@ public class BoardApiController {
     }
 
     @PostMapping(value = "/api/board/{boardId}/reply")
-    public ResponseDTO<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply) {
+    // public ResponseDTO<Integer> replySave(@PathVariable int boardId, @RequestBody
+    // Reply reply) {
+    public ResponseDTO<Integer> replaySave(@RequestBody ReplySaveRequestDTO reply) {
         User user = (User) session.getAttribute("principal");
 
         log.info("user : {}", user);
         if (user != null) {
-            boardService.댓글쓰기(user, boardId, reply);
-            return new ResponseDTO<Integer>(HttpStatus.OK.value(), 1);
+            int result = boardService.댓글쓰기(user, reply);
+            return new ResponseDTO<Integer>(HttpStatus.OK.value(), result);
         } else {
             return new ResponseDTO<Integer>(HttpStatus.BAD_REQUEST.value(), 0);
         }

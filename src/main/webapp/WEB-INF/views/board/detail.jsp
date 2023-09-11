@@ -4,6 +4,7 @@
 <main>
     <div class="conatiner m-2">
         <button onclick="history.back()" class="btn btn-secondary">돌아가기</button>
+        <hr />
         <c:if test="${board.user.id == principal.id}">
             <a href="/board/${board.id}/update_form" class="btn btn-warning">수정</a>
             <button class="btn btn-danger" id="btn-delete">삭제</button>
@@ -16,6 +17,7 @@
         <!-- Empty Space for prettier save -->
         조회수 : <span><i>${board.count}</i></span>
     </div>
+    <hr />
     <div class="m-3 form-group">
         <p>제목(title)</p>
         <h2 id="title">${board.title}</h2>
@@ -48,7 +50,7 @@
                         <div class="font-italic">작성자: ${reply.user.username}</div>
                         <c:if test="${reply.user.id eq principal.id}">
                             <!-- 이게 왜 빨간줄? -->
-                            <button onclick="index.replyDelete(${board.id}, ${reply.id})" class="badge">삭제</button>
+                            <button onclick="index.replyDelete(${board.id}, ${reply.id})" class="badge ms-3">삭제</button>
                         </c:if>
                     </div>
                 </li>

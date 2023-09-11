@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.merchandise.eeblog.dto.ReplySaveRequestDTO;
 import com.merchandise.eeblog.model.Board;
-import com.merchandise.eeblog.model.Reply;
 import com.merchandise.eeblog.model.User;
 import com.merchandise.eeblog.repository.BoardRepository;
 import com.merchandise.eeblog.repository.ReplyRepository;
@@ -106,17 +106,36 @@ public class BoardService {
         // DB가 flush된다. 즉, Commit 된다.
     }
 
-    // 카페에 DTO로 파라미터를 받아서 처리하는게 있는데 한번 확인. 영속성으로 하는것이 아닌듯
+    // DTO로 파라미터를 받아서 처리 가능.
+    // 규모가 크면 DTO로 처리하는 것이 좋다.
     @Transactional
-    public void 댓글쓰기(User user, int boardId, Reply requestReply) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            return new IllegalArgumentException("댓글쓰기 실패 : 게시글의 아이디를 찾을 수 없습니다.");
-        });
+    public int 댓글쓰기(User user, ReplySaveRequestDTO requestReply) {
+        // Board board =
+        // boardRepository.findById(requestReply.getBoardId()).orElseThrow(() -> {
+        // return new IllegalArgumentException("댓글쓰기 실패 : 게시글의 아이디를 찾을 수 없습니다.");
+        // });
 
-        requestReply.setUser(user);
-        requestReply.setBoard(board);
+        // board.setCount(board.getCount() - 1);
 
-        replyRepository.save(requestReply);
+        // boardRepository.save(board);
+
+        // 방법 1
+        // reply.update(user, board, requestReply.getContent());
+
+        // 방법 2
+        // Reply reply = Reply.builder()
+        // .user(user).board(board)
+        // .content(requestReply.getContent())
+        // .build();
+
+        // 방법 1,2를 사용할 때 저장
+        // replyRepository.save(reply);
+
+        // 요 라인 하나로 위에 코드를 모두 함축 시킬 수 있다.
+        int result = replyRepository.mySave(requestReply.getUserId(), requestReply.getBoardId(),
+                requestReply.getContent());
+
+        return result;
     }
 
     @Transactional
